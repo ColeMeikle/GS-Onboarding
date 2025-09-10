@@ -33,7 +33,15 @@ class MainCommand(BaseSQLModel, table=True):
         The format of the comma seperated values is "data1,data2" so no spaces between data and the commas.
         """
         # TODO: (Member) Implement this method
-        return self
+        if(self.params == None and self.format == None or 
+                (self.params != None and self.format != None and 
+                len(self.params.split(",")) and len(self.format.split(",")))):
+            return self
+        else:
+            raise ValueError(
+                "params and format must both be None or have an equal number of comma seperated values."
+            )
+
 
 
 class Command(BaseSQLModel, table=True):

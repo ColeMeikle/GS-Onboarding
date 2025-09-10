@@ -1,7 +1,10 @@
+import time
 from collections.abc import Callable
 from typing import Any
 from fastapi import Request, Response
 from starlette.middleware.base import BaseHTTPMiddleware
+
+from backend.utils.logging import logger
 
 
 class LoggerMiddleware(BaseHTTPMiddleware):
@@ -18,5 +21,14 @@ class LoggerMiddleware(BaseHTTPMiddleware):
         :return: Response from endpoint
         """
         # TODO:(Member) Finish implementing this method
+        start_time = time.perf_counter()
         response = await call_next(request)
+
+        duration = time.perf_counter() - start_time
+
+
+        params = request.query_params
+        #logger.info already prints the date and time by default
+        logger.info(f"\nRequest: {request.method} {str(request.url).replace('http://testserver', '')} -> Response: {response.status_code} Duration: {duration:.5} seconds")
+
         return response
